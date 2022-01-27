@@ -25,7 +25,7 @@
 
                 if (!configContext.Clients.Any())
                 {
-                    foreach (var client in Configuration.GetClients())
+                    foreach (var client in Config.GetClients())
                     {
                         configContext.Clients.Add(client.ToEntity());
                     }
@@ -34,7 +34,7 @@
 
                 if (!configContext.IdentityResources.Any())
                 {
-                    foreach (var resource in Configuration.GetIdentityResources())
+                    foreach (var resource in Config.GetIdentityResources())
                     {
                         configContext.IdentityResources.Add(resource.ToEntity());
                     }
@@ -43,7 +43,7 @@
 
                 if (!configContext.ApiScopes.Any())
                 {
-                    foreach (var resource in Configuration.GetApiScopes())
+                    foreach (var resource in Config.GetApiScopes())
                     {
                         configContext.ApiScopes.Add(resource.ToEntity());
                     }

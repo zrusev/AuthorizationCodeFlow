@@ -4,8 +4,9 @@
     using IdentityServer4.Models;
     using System.Collections.Generic;
     using IdentityServer4;
+    using Common;
 
-    public static class Configuration
+    public static class Config
     {
         public static IEnumerable<IdentityResource> GetIdentityResources()
             => new List<IdentityResource>
@@ -17,7 +18,7 @@
         public static IEnumerable<ApiScope> GetApiScopes()
             => new List<ApiScope>
             {
-                new ApiScope("cats")
+                new ApiScope(Constants.API_SCOPE)
             };
 
         public static IEnumerable<Client> GetClients()
@@ -32,7 +33,7 @@
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
 
                     // Scopes that this client has access to.
-                    AllowedScopes = { "cats" }
+                    AllowedScopes = { Constants.API_SCOPE }
                 },
                 new Client
                 {
@@ -53,7 +54,7 @@
 
                     AllowedScopes =
                     {
-                        "cats",
+                        Constants.API_SCOPE,
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile
                     },
@@ -75,7 +76,7 @@
 
                     AllowedScopes = {
                         IdentityServerConstants.StandardScopes.OpenId,
-                        "cats"
+                        Constants.API_SCOPE
                     },
 
                     AllowAccessTokensViaBrowser = true,

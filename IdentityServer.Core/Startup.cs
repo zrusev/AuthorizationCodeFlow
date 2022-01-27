@@ -1,16 +1,16 @@
 namespace IdentityServer.Core
 {
+    using Data;
+    using Data.Models;
+    using Infrastructure;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using IdentityServer.Data;
-    using IdentityServer.Data.Models;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.EntityFrameworkCore;
     using System.Reflection;
-    using Infrastructure;
 
     public class Startup
     {
@@ -24,10 +24,8 @@ namespace IdentityServer.Core
             services
                 .AddDbContext<IdentityServerDbContext>(config =>
                 {
-                    config.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
-                });
-
-            services
+                    config.UseInMemoryDatabase(this.Configuration.GetConnectionString("DefaultInMemory"));
+                })
                 .AddIdentity<IdentityServerUser, IdentityRole>(config =>
                 {
                     config.Password.RequiredLength = 4;
@@ -54,16 +52,19 @@ namespace IdentityServer.Core
             services
                 .AddIdentityServer()
                 .AddAspNetIdentity<IdentityServerUser>()
-                .AddConfigurationStore(config =>
-                {
-                    config.ConfigureDbContext = options => options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"),
-                        sql => sql.MigrationsAssembly(migrationsAssembly));
-                })
-                .AddOperationalStore(config =>
-                {
-                    config.ConfigureDbContext = options => options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"),
-                        sql => sql.MigrationsAssembly(migrationsAssembly));
-                })
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())
+                .AddInMemoryApiScopes(Config.GetApiScopes())
+                .AddInMemoryClients(Config.GetClients())
+                //.AddConfigurationStore(config =>
+                //{
+                //    config.ConfigureDbContext = options => options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"),
+                //        sql => sql.MigrationsAssembly(migrationsAssembly));
+                //})
+                //.AddOperationalStore(config =>
+                //{
+                //    config.ConfigureDbContext = options => options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"),
+                //        sql => sql.MigrationsAssembly(migrationsAssembly));
+                //})
                 .AddDeveloperSigningCredential();
 
             services.AddControllersWithViews();
@@ -80,7 +81,7 @@ namespace IdentityServer.Core
 
             app.UseIdentityServer();
 
-            app.UseInitializer(env);
+            //app.UseInitializer(env);
 
             app.UseEndpoints(endpoints =>
             {
