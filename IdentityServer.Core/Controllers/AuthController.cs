@@ -1,8 +1,7 @@
 ﻿namespace IdentityServer.Core.Controllers
 {
-    using IdentityServer.Core.Models;
-    using IdentityServer.Data;
-    using IdentityServer.Data.Models;
+    using Core.Models;
+    using Data.Models;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using System.Threading.Tasks;
